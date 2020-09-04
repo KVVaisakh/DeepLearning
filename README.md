@@ -21,18 +21,18 @@ z is small( -∞) => y’(1)=0
 ∂ L(y’,y)/∂z = y’ - y
 ∂ y’/∂z = y’(1-y’)
 
-Loss Function
+	2.Loss Function
 In optimization problem, Loss function should be convex(single local optima)
 L(y’,y)= -( ylog(y’) + (1-y)log(1-y’) )
 
-Cost Funtion
+	3.Cost Funtion
 J(w,b)=(1/m)* mΣi=1 L(y’(i),y(i))
 
 Gradient Descent
 w = w - α* ( ∂ J(w,b)/∂w )		(where α is learning rate)
 b = b -  α * ( ∂ J(w,b)/∂b )
 
-Algorithm
+	4.Algorithm
 
 j=0,dw=numpy.zeros(nx,1),db=0
 for i = 1 to m
@@ -51,7 +51,7 @@ db /= m
 w = w -  α*dw
 b = b -  α*db
 
-Vectorization
+	5.Vectorization
 It is faster due to parallel processing(SIMD - single instruction multiple data) of CPU and GPU.
 
 z = numpy.dot(w,x)+b	// z = wtx+b
@@ -62,7 +62,7 @@ u = numpy.maximum(v,0)
 u = v**2
 u = 1/v
 
-Better Algorithm using vectorization
+	6.Better Algorithm using vectorization
 // Z = [z(1),z(2),...,z(n)]
 // b = [b,b,...,b] broadcasting
 // dz=[dz1,dz2,dz3,..,dzn]
@@ -80,7 +80,7 @@ b = b -  α*db
 
 
 
-Neural Network Representation
+	7.Neural Network Representation
 z1[1] = w1[1].T*a1[0]+b1[1]  => a1[1] = σ(z1[1])
 z2[1] = w2[1].T*a2[0]+b2[1]  => a2[1] = σ(z2[1])		(layer 1,node 2)
 
@@ -123,7 +123,7 @@ A[2] = σ(Z[2])
 
 
 
-Activation Functions
+	8.Activation Functions
 sigmoid function(binary classification)
 tanh function(a=tanh(z)=(ez-e-z)/(ez+e-z)) )
 Rectified linear unit(ReLU – max(0,z))
@@ -150,7 +150,7 @@ dZ[l-1] = np.dot(W[l].T , dZ[l]) * g[l-1]’(Z[l-1])
 dz means ∂L/∂z = ∂L/∂a *∂a/∂z = da * d(g(z))/d(z) = da * g’(z) 
 dw means ∂L/∂w[l]=∂L/∂z[l] * ∂z[l]/∂w[l] = dz[l] * ∂(w[l]*a[l-1])/∂w[l] = dz[l] * a[l-1]
 
-Notation:
+	9.Notation:
     • Superscript [l] denotes a quantity associated with the lth layer.
         ◦ Example: a[L] is the Lth layer activation. W[L] and b[L] are the Lth layer parameters.
     • Superscript (i) denotes a quantity associated with the ith example.
@@ -165,7 +165,7 @@ Test Set – used to test the predictions of the selected algorithm.
 High variance – overfitting the data(best in training set but very bad in test set)
 high bias – very bad predictions(even in training set, error is very high)
 
-Basic Recipe for machine learning
+	10.Basic Recipe for machine learning
 high bias
     • bigger network
     • train it longer
@@ -176,7 +176,7 @@ high variance
     • regularization (create bias – variance trade off(only if network is small))
     • new architechture
 
-Regularization 
+	11.Regularization 
 cost function
 J(w,b) = (1/m) x mΣi=1 L(y’(i),y(i)) + (λ/2m) ||w||22 
 λ(hyper parameter) – regularisation parameter
@@ -185,7 +185,7 @@ J(w,b) = (1/m) x mΣi=1 L(y’(i),y(i)) + (λ/2m) ||w||22
     • L1 regularization(makes most of w 0)
 	L1 norm - (λ/2m) ||w||1 = (λ/2m) * nΣi=1 |wi|
 
-Forbenius norm of a matrix
+	12.Forbenius norm of a matrix
 J(w[l ],b) = (1/m) x mΣi=1 L(y’(i),y(i)) + (λ/2m) LΣi=1||w[l ]||2F 
 ||w[l]||F2 = n[l]Σi=1n[l−1]Σj=1(wi,j[l])2
 dw[l] = from back propagation + (λ/m)w[l]
@@ -193,11 +193,11 @@ also called weight decay because w = (1-αλ/m)w – α*dW
 
 since w is less(nearly 0), so many neurons will be dead, so the network becomes less complex and z also approaches 0, so activation function approaches linear.
 
-Dropout regularization
+	13.Dropout regularization
 drops some of the neurons as random and makes the network simple.
 By dropout, each neuron will depend less each other neurons
 
-Inverted dropouts
+	14.Inverted dropouts
 D[n] = np.random.rand(a[n].shape[0],a[n].shape[1])<keepProb[n]
 a[n] = np.multiply(a[n],d[n])
 a[n] /= keepProb
@@ -206,26 +206,26 @@ keepProb should be high for layers having high matrix size(w)
 
 test time doesnt need dropout
 
-data augmentation
+	15.data augmentation
 reshaping,flipping,zooming,distortion the image to get more inputs.
 
-Early stopping
+	16.Early stopping
 stop training when dev set error increases.
 
-Optimization
+	17.Optimization
 normalization of input
 when the variables vary differently(x1(1,1000),x2(0,1)) if normalised learning will be faster.
 X = (X – μ)/σ
 μ =  (1/m)nΣi xi
 σ2 = (1/m)nΣi (xi  - μ)2
 
-vanishing and exploding gradients(weight initialisation for deep network)
+	18.vanishing and exploding gradients(weight initialisation for deep network)
 make the weigths near to 1.
 variance(w) = 1/n 	-> better(Xavier initialisation)
 variance(w) = 2/n 	-> better for relu
 w[l] = np.random.randn(shape)*np.sqrt(1 or 2/n[l-1])
 
-minibatches
+	19.minibatches
 dividing the trainingset into diffeerent mini batches, so as to speed up the training.
 Y will be divided into Y{1},Y{2},Y{3},...,Y{t}
 epoch – no of iterations through the training set
@@ -234,19 +234,19 @@ in minibatch processing 1 epoch => t gradient descent steps
 
 suggested minibatch – 64,128,256,512
 
-exponentially weighted average: vt = βvt-1+(1-β)θt
+	20.exponentially weighted average: vt = βvt-1+(1-β)θt
 bias correction: vt= vt/(1-βt)
 
-exponential weighted average in gradient descent: 
+	21.exponential weighted average in gradient descent: 
 vdw = βvdw + (1-β)dw ~  βvdw + dw
 w=w-αvdw
 
-RMS prop
+	22.RMS prop
 Sdw= βSdw + (1-β)dw2
 w=w-α dw/(√Sdw+10-8)
 b=b-α db/(√Sdb+10-8)
 
-Adams Optimisation
+	23.Adams Optimisation
 vdw =0, Sdw=0,vdb =0, Sdb=0,β1=0.9,β2=0.999
 on iteration t:
 {
@@ -261,13 +261,14 @@ on iteration t:
 	b=b-α vdbcorrected/(√Sdb+10-8)
 }
 
-Learning Rate decay
+	24.Learning Rate decay
 α = α0/(1+decayRate×epochNumber)
 α = 0.95epochNumber α0
 α = α0 * k/epochNumber 
 manual decay, descrete decay
 
-saddle points – happens in high dimenstions. Its better than local optimas which occur in say 2 dimentional inputs. But problem of plateu still exist.
+	25.saddle points
+happens in high dimenstions. Its better than local optimas which occur in say 2 dimentional inputs. But problem of plateu still exist.
 Tuning of hyper parameters
 dont use grid, use random – if one of the parameter is not related to cost function, then we may get only n values in a grid by n2 values in random.
 Use coarse to fine : Zoom into the preferred set of values and rerun the process to get better values.
@@ -280,7 +281,8 @@ picking of β
 if we want it in a range of 0.9 to 0.9999 => 1-β => 10-1 to 10-4
 r = -4/2*(np.random.rand()+1)
 β = 1-10r
-Batch Normalisation
+
+	26.Batch Normalisation
 znorm=(z-μ)/σ
 zbnorm = γ*znorm+β
 β, γ change just like w, with dβ, dγ
@@ -292,7 +294,7 @@ activation funtion : a[L] = eZ[L]/Σ4i=i ti
 L(y’,y)= -Σ4i yilog(yi’) 
 J(w,b)=(1/m)* mΣi=1 L(y’(i),y(i))
 
-Orthogonalisation
+	27.Orthogonalisation
 training set(bias) – bigger network,adam, changing hyperparameters, NN architecture
 dev set(variance) – regularisation, bigger test set,changing hyperparameters, NN architecture
 test set – increase dev set
@@ -309,4 +311,4 @@ true as optimizing matrix and false-negative,false-positive as satisfying value
 
 take dev set and test set from the same distribution
 
-Bayes Optimal Error – max accuracy achievable (above human accuracy)
+	28.Bayes Optimal Error – max accuracy achievable (above human accuracy)
